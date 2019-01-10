@@ -23,11 +23,16 @@
       "!**/coverage/**",
       "!**/client/dist/**",
       "!**/*.config.{dev|prod}.js",
-      "!**/src/index.jsx"
+      "!**/src/index.jsx",
+      "!**/src/routes.jsx"
     ],
     "testRegex": "./__tests__/.*.test.js",
     "rootDir": ".",
-    "setupTestFrameworkScriptFile": "./__tests__/main.js"
+    "setupTestFrameworkScriptFile": "./__tests__/main.js",
+    "moduleNameMapper":{
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+ }
   },
   "keywords": [
     "food",
@@ -70,6 +75,10 @@
   "dependencies": {
     "coveralls": "^3.0.2",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "react-redux": "^6.0.0",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   }
 }
