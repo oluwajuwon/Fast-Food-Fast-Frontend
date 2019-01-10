@@ -1,0 +1,45 @@
+{
+  "name": "fast-food-fast-frontend",
+  "version": "1.0.0",
+  "description": "A food delivery service application for a restaurant, to enable a restaurant manage customer orders better and deliver fast food items to customers in a 'Split Second",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-client": "webpack-dev-server --config ./webpack.config.dev.js --mode development",
+    "start-prod": "webpack --config ./webpack.config.prod.js --mode production && nodemon ./app/app.js --exec babel-node --"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oluwajuwon/Fast-Food-Fast-Frontend.git"
+  },
+  "keywords": [
+    "food",
+    "order"
+  ],
+  "author": "Oluwajuwon Fagbohungbe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oluwajuwon/Fast-Food-Fast-Frontend/issues"
+  },
+  "homepage": "https://github.com/oluwajuwon/Fast-Food-Fast-Frontend#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "babel-polyfill": "^6.26.0",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  }
+}
