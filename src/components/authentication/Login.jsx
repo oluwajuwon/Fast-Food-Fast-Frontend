@@ -1,10 +1,10 @@
 import React from 'react';
 
-const App = () => (
+const Login = () => (
   <div>
-  Hello Everybody
+  This is login
     <p className="Class-inro">Hello my people</p>
   </div>
 );
 
-export default App;
+export default Login;
