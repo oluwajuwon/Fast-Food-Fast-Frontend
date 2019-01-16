@@ -4,10 +4,9 @@ node_js:
   - "node"
   - "8"
 
-addons:
-  code_climate:
-      repo_token:
-        secure: "cbd83e4586a5dcac1a62fd19ce78c9b367ce40f6c6970517afe03f14ac0bc18b"
+env:
+  global:
+    - CC_TEST_REPORTER=cbd83e4586a5dcac1a62fd19ce78c9b367ce40f6c6970517afe03f14ac0bc18b"
 
 before_install:
   - psql -c 'create database fastfoodfast;' -U postgres

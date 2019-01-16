@@ -1,7 +1,7 @@
 /*box section style starts*/
 .box-section{
     min-height: 90vh;
-    background-image: url('../images/form-bg.png')
+    background-image: url('../../public/images/form-bg.png')
 }
 
 .box-container{
