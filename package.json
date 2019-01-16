@@ -24,15 +24,17 @@
       "!**/client/dist/**",
       "!**/*.config.{dev|prod}.js",
       "!**/src/index.jsx",
-      "!**/src/routes.jsx"
+      "!**/src/routes.jsx",
+      "!**/*.{snap}"
     ],
-    "testRegex": "./__tests__/.*.test.js",
+    "testRegex": "./__tests__/.*.test.js$",
     "rootDir": ".",
     "setupTestFrameworkScriptFile": "./__tests__/main.js",
-    "moduleNameMapper":{
+    "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
- }
+    },
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   },
   "keywords": [
     "food",
@@ -48,8 +50,12 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
+    "axios-mock-adapter": "^1.16.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -73,7 +79,9 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "coveralls": "^3.0.2",
+    "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",

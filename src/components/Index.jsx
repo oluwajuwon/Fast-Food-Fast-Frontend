@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
+import Footer from './Footer';
 import '../styles/style.css';
 
 const Index = () => (
   <div>
+    <NavBar />
     <div className="top-hero">
       <div className="container">
         <div className="top-hero-text">
@@ -26,6 +29,7 @@ const Index = () => (
     </div>
   This is index
     <p className="Class-inro">Hello my people</p>
+    <Footer />
   </div>
 );
 
