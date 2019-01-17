@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import login from '../../actions/index';
+import { login } from '../../actions/index';
 import NavBar from '../NavBar';
 import Footer from '../Footer';
 import '../../styles/box.css';
@@ -11,32 +11,36 @@ export class Login extends React.Component {
   state={
     email: '',
     password: '',
+    loading: 'Login',
   };
 
   onFormSubmit = async (event) => {
     event.preventDefault();
+    this.setState({ loading: 'Loading...' });
     const { login: loginUser } = this.props;
-    const userData = this.state;
+    const { email, password } = this.state;
+    const userData = { email, password };
     await loginUser(userData);
+    this.setState({ loading: 'Login' });
   }
 
   render() {
-    const { email, password } = this.state;
-    const { message } = this.props;
+    const { email, password, loading } = this.state;
+    const { message, isSuccessful } = this.props;
     return (
-      <div>
+      <div className="box-section">
         <NavBar />
-        <section className="box-section">
+        <section>
           <div className="box-container">
             <div className="innerbox-container">
               <div className="form">
                 <h2>Login to your account</h2>
                 <form id="user-login" onSubmit={this.onFormSubmit}>
                   <div>
-                    <p className="">Email</p>
-                    <p>
+                    <p className={isSuccessful === 'true' ? 'green-text text-center' : 'red-text text-center'}>
                       {message}
                     </p>
+                    <p className="">Email</p>
                     <input
                       type="email"
                       className="textbox"
@@ -64,7 +68,7 @@ export class Login extends React.Component {
                   </p>
                   <br />
                   <div className="">
-                    <button type="submit" id="submit-login" className="btn blue-bg-colour white-text">Login</button>
+                    <button type="submit" id="submit-login" className="btn blue-bg-colour white-text">{loading}</button>
                   </div>
                   <span id="error" />
                   <br />
@@ -93,6 +97,7 @@ Login.defaultProps = {
 Login.propTypes = {
   login: PropTypes.func,
   message: PropTypes.string,
+  isSuccessful: PropTypes.string,
 };
 
 const mapStateToProps = state => ({

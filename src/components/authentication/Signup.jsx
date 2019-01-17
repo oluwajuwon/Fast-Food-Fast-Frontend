@@ -1,10 +1,167 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { signup } from '../../actions/index';
+import NavBar from '../NavBar';
+import Footer from '../Footer';
+import '../../styles/box.css';
 
-const Signup = () => (
-  <div>
-  This is Signup
-    <p>Hello everyone</p>
-  </div>
-);
+export class Signup extends React.Component {
+  state={
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    message: '',
+    loading: 'Sign up',
+  }
 
-export default Signup;
+  onFormSubmit = async (event) => {
+    event.preventDefault();
+    this.setState({ loading: 'loading...' });
+    const {
+      signup: signupUser,
+      success,
+      history,
+    } = this.props;
+    const {
+      fullName,
+      username,
+      email,
+      password,
+    } = this.state;
+    const userData = {
+      fullName,
+      username,
+      email,
+      password,
+    };
+    await signupUser(userData);
+    await this.setState({ message: this.props.message, loading: 'Sign up' });
+    setTimeout(() => {
+      if (success === true) {
+        history.push('/menu');
+      }
+      this.setState({ message: this.props.message, });
+    }, 1000);
+  }
+
+  comparePassword = () => {
+    const { password, confirmPassword } = this.state;
+    if (password && confirmPassword) {
+      if (password !== confirmPassword) {
+        return this.setState({ message: 'The passwords do not match' });
+      }
+      return this.setState({ message: '' });
+    }
+    return false;
+  }
+
+  render() {
+    const { message, loading } = this.state;
+    const { isSuccessful } = this.props;
+    return (
+      <div className="box-section">
+        <NavBar />
+        <section>
+          <div className="box-container">
+            <div className="innerbox-container">
+              <div className="form">
+                <h2>Create an account</h2>
+                <form id="user-Signup" onSubmit={this.onFormSubmit}>
+                  <div>
+                    <p className={isSuccessful === 'true' ? 'green-text text-center' : 'red-text text-center'}>
+                      {message}
+                    </p>
+                    <p className="">Full name</p>
+                    <input
+                      type="text"
+                      className="textbox"
+                      id="full-name"
+                      onChange={event => this.setState({ fullName: event.target.value })}
+                      required
+                      placeholder="Enter full name here..."
+                    />
+                  </div>
+                  <div>
+                    <p className="">Username</p>
+                    <input
+                      type="text"
+                      autoComplete="false"
+                      className="textbox"
+                      id="username"
+                      onChange={event => this.setState({ username: event.target.value })}
+                      required
+                      placeholder="Enter username here..."
+                    />
+                  </div>
+                  <div>
+                    <p className="">Email</p>
+                    <input
+                      type="email"
+                      className="textbox"
+                      id="email"
+                      onChange={event => this.setState({ email: event.target.value })}
+                      required
+                      placeholder="Enter email here..."
+                    />
+                  </div>
+                  <div>
+                    <p className="">Password</p>
+                    <input
+                      type="password"
+                      className="textbox"
+                      id="password"
+                      onChange={event => this.setState({ password: event.target.value })}
+                      onKeyUp={this.comparePassword}
+                      required
+                      placeholder="Enter password here..."
+                    />
+                  </div>
+                  <div>
+                    <p className="">Confirm Password</p>
+                    <input
+                      type="password"
+                      className="textbox"
+                      id="password-match"
+                      onChange={event => this.setState({ confirmPassword: event.target.value })}
+                      onKeyUp={this.comparePassword}
+                      required
+                      placeholder="Enter password again..."
+                    />
+                  </div>
+                  <br />
+                  <div className="">
+                    <button type="submit" id="submit-signup" className="btn blue-bg-colour white-text">{loading}</button>
+                    <Link to="/login" className="secondary-text-color">Already have an account? Login</Link>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+}
+
+Signup.defaultProps = {
+  message: '',
+  signup: () => {},
+};
+
+Signup.propTypes = {
+  signup: PropTypes.func,
+  message: PropTypes.string,
+  isSuccessful: PropTypes.string,
+};
+
+const mapStateToProps = state => ({
+  message: state.signup && state.signup.message ? state.signup.message : null,
+  isSuccessful: state.signup && state.signup.success ? state.signup.success : null,
+});
+
+export default connect(mapStateToProps, { signup })(Signup);
