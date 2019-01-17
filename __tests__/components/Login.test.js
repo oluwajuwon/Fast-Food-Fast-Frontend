@@ -8,7 +8,6 @@ const props = {
 };
 describe('Test for login component', () => {
   it('Should contain', () => {
-    // jest.spyOn(Login.prototype, 'onFormSubmit').mockImplementation(() => undefined);
     const wrapper = shallow(<Login {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

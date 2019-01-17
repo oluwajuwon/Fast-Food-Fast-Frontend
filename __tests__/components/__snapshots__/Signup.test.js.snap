@@ -16,16 +16,47 @@ exports[`Test for login component Should contain 1`] = `
           className="form"
         >
           <h2>
-            Login to your account
+            Create an account
           </h2>
           <form
-            id="user-login"
+            id="user-Signup"
             onSubmit={[Function]}
           >
             <div>
               <p
                 className="red-text text-center"
               />
+              <p
+                className=""
+              >
+                Full name
+              </p>
+              <input
+                className="textbox"
+                id="full-name"
+                onChange={[Function]}
+                placeholder="Enter full name here..."
+                required={true}
+                type="text"
+              />
+            </div>
+            <div>
+              <p
+                className=""
+              >
+                Username
+              </p>
+              <input
+                autoComplete="false"
+                className="textbox"
+                id="username"
+                onChange={[Function]}
+                placeholder="Enter username here..."
+                required={true}
+                type="text"
+              />
+            </div>
+            <div>
               <p
                 className=""
               >
@@ -38,7 +69,6 @@ exports[`Test for login component Should contain 1`] = `
                 placeholder="Enter email here..."
                 required={true}
                 type="email"
-                value=""
               />
             </div>
             <div>
@@ -51,48 +81,47 @@ exports[`Test for login component Should contain 1`] = `
                 className="textbox"
                 id="password"
                 onChange={[Function]}
+                onKeyUp={[Function]}
                 placeholder="Enter password here..."
                 required={true}
                 type="password"
-                value=""
               />
             </div>
-            <p>
-              <a
+            <div>
+              <p
                 className=""
-                href="forgotpassword.html"
               >
-                forgot password?
-              </a>
-            </p>
+                Confirm Password
+              </p>
+              <input
+                className="textbox"
+                id="password-match"
+                onChange={[Function]}
+                onKeyUp={[Function]}
+                placeholder="Enter password again..."
+                required={true}
+                type="password"
+              />
+            </div>
             <br />
             <div
               className=""
             >
               <button
                 className="btn blue-bg-colour white-text"
-                id="submit-login"
+                id="submit-signup"
                 type="submit"
               >
-                Login
+                Sign up
               </button>
-            </div>
-            <span
-              id="error"
-            />
-            <br />
-            <div
-              className=""
-            >
               <Link
-                className=""
+                className="secondary-text-color"
                 replace={false}
-                to="/signup"
+                to="/login"
               >
-                Don't have an account? Sign Up
+                Already have an account? Login
               </Link>
             </div>
-            <br />
           </form>
         </div>
       </div>
