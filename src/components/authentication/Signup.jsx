@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { signup } from '../../actions/index';
 import NavBar from '../NavBar';
-import Footer from '../Footer';
+import Footer from '../presentation/Footer';
 import '../../styles/box.css';
 
 export class Signup extends React.Component {
@@ -23,7 +23,6 @@ export class Signup extends React.Component {
     this.setState({ loading: 'loading...' });
     const {
       signup: signupUser,
-      success,
       history,
     } = this.props;
     const {
@@ -39,12 +38,13 @@ export class Signup extends React.Component {
       password,
     };
     await signupUser(userData);
-    await this.setState({ message: this.props.message, loading: 'Sign up' });
+    const { message, isSuccessful } = this.props;
+    await this.setState({ message, loading: 'Sign up' });
     setTimeout(() => {
-      if (success === true) {
+      if (isSuccessful === true) {
         history.push('/menu');
       }
-      this.setState({ message: this.props.message, });
+      this.setState({ message });
     }, 1000);
   }
 
@@ -151,6 +151,7 @@ export class Signup extends React.Component {
 Signup.defaultProps = {
   message: '',
   signup: () => {},
+  isSuccessful: '',
 };
 
 Signup.propTypes = {

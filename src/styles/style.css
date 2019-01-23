@@ -64,6 +64,14 @@ button:hover{
     padding: 7px
 }
 
+.display-none {
+    display: none
+}
+
+.display-block {
+    display: block;
+}
+
 hr{
     border: 1px solid #ccc
 }
