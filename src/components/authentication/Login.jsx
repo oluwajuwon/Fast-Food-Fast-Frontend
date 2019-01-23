@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/index';
 import NavBar from '../NavBar';
-import Footer from '../Footer';
+import Footer from '../presentation/Footer';
 import '../../styles/box.css';
 
 export class Login extends React.Component {
   state={
     email: '',
     password: '',
+    message: '',
     loading: 'Login',
   };
 
@@ -21,12 +22,25 @@ export class Login extends React.Component {
     const { email, password } = this.state;
     const userData = { email, password };
     await loginUser(userData);
+    const { responseMessage, isSuccessful, history } = this.props;
     this.setState({ loading: 'Login' });
+
+    if (isSuccessful === 'true') {
+      this.setState({ message: responseMessage });
+      setTimeout(() => {
+        history.push('/menu');
+      }, 900);
+    }
   }
 
   render() {
-    const { email, password, loading } = this.state;
-    const { message, isSuccessful } = this.props;
+    const {
+      email,
+      password,
+      loading,
+      message,
+    } = this.state;
+    const { isSuccessful } = this.props;
     return (
       <div className="box-section">
         <NavBar />
@@ -90,18 +104,21 @@ export class Login extends React.Component {
 }
 
 Login.defaultProps = {
-  message: '',
+  responseMessage: '',
   login: () => {},
+  isSuccessful: '',
+  history: null,
 };
 
 Login.propTypes = {
   login: PropTypes.func,
-  message: PropTypes.string,
+  responseMessage: PropTypes.string,
+  history: PropTypes.oneOfType([PropTypes.object]),
   isSuccessful: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
-  message: state.login ? state.login.message : null,
+  responseMessage: state.login ? state.login.message : null,
   isSuccessful: state.login ? state.login.success : null,
 });
 

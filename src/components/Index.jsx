@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from './NavBar';
-import Footer from './Footer';
+import Footer from './presentation/Footer';
 import '../styles/style.css';
 
 const Index = () => (
@@ -27,8 +27,7 @@ const Index = () => (
         </div>
       </div>
     </div>
-  This is index
-    <p className="Class-inro">Hello my people</p>
+    <p className="Class-inro">Recent Menu Items</p>
     <Footer />
   </div>
 );
