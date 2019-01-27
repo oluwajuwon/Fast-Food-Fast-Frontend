@@ -97,7 +97,7 @@ class Menu extends React.Component {
                 {this.renderList()}
               </div>
 
-              <div className="text-center">ß
+              <div className="text-center">
                 <button type="button" className="blue-bg-colour white-text">
                   <Link to="/">Show more items</Link>
                 </button>

@@ -152,17 +152,19 @@ Signup.defaultProps = {
   message: '',
   signup: () => {},
   isSuccessful: '',
+  history: null,
 };
 
 Signup.propTypes = {
   signup: PropTypes.func,
   message: PropTypes.string,
   isSuccessful: PropTypes.string,
+  history: PropTypes.oneOfType([PropTypes.object]),
 };
 
 const mapStateToProps = state => ({
-  message: state.signup && state.signup.message ? state.signup.message : null,
-  isSuccessful: state.signup && state.signup.success ? state.signup.success : null,
+  message: state.auth && state.auth.response ? state.auth.response.message : null,
+  isSuccessful: state.auth && state.auth.response ? state.auth.response.success : null,
 });
 
 export default connect(mapStateToProps, { signup })(Signup);

@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
-import loginReducer from './loginReducer';
-import signupReducer from './signupReducer';
+import authReducer from './authReducer';
 import foodReducer from './foodReducer';
 import selectFoodReducer from './selectFoodReducer';
 
 
 export default combineReducers({
-  login: loginReducer,
-  signup: signupReducer,
+  auth: authReducer,
   food: foodReducer,
   cart: selectFoodReducer,
 });
