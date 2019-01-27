@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
-import login from '../../src/reducers/loginReducer';
+import login from '../../src/reducers/authReducer';
 import axiosInstance from '../../src/api/axiosInstance';
 
 describe('login reducer', () => {
@@ -14,7 +14,7 @@ describe('login reducer', () => {
     const payload = { success: 'true', message: 'login successful' };
     await axiosMock.onPost().reply(200, payload);
     const action = { type: 'LOG_IN', payload };
-    const expectedState = { success: 'true', message: 'login successful' };
+    const expectedState = { isLoggedin: true, response: { success: 'true', message: 'login successful' } };
 
     expect(login(null, action)).toEqual(expectedState);
   });
@@ -24,7 +24,7 @@ describe('login reducer', () => {
     const payload = { success: 'false', message: 'please enter valid credentials' };
     await axiosMock.onPost().reply(400, payload);
     const action = { type: 'LOG_IN_FAIL', payload };
-    const expectedState = { success: 'false', message: 'please enter valid credentials' };
+    const expectedState = { isLoggedin: false, response: { success: 'false', message: 'please enter valid credentials' } };
 
     expect(login(null, action)).toEqual(expectedState);
   });

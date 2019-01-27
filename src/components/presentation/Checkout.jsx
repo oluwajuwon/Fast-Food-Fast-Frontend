@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavBarUSer from './NavBarUser';
-import { calculateTotal, checkCartCount } from '../../actions/index';
+import { calculateTotal, checkCartCount, orderFoodItems } from '../../actions/index';
 import cartUtils from '../../utils/cartUtils';
 import '../../styles/style.css';
 
@@ -65,6 +65,14 @@ class Checkout extends React.Component {
     this.setState({ foodItems: JSON.parse(cartUtils.getCartItems()) });
     const { calculateTotal } = this.props;
     calculateTotal();
+  }
+
+  placeOrder() {
+    const { orderFoodItems: placeNewOrder} = this.props;
+    const { foodItems } = this.state;
+    // const foodItems = { cartItems };
+    console.log(foodItems);
+    placeNewOrder({ foodItems });
   }
 
   renderList() {
@@ -133,7 +141,7 @@ class Checkout extends React.Component {
               Total: &#8358;
               {totalAmount}
             </h3>
-            <button type="button" className="blue-bg-colour white-text">
+            <button type="button" onClick={event => this.placeOrder(event)} className="blue-bg-colour white-text">
               Place Order
             </button>
             <div>
@@ -150,4 +158,11 @@ const mapStateToProps = state => ({
   totalAmount: state.food ? state.food.totalAmount : [],
 });
 
-export default connect(mapStateToProps, { calculateTotal, checkCartCount })(Checkout);
+export default connect(
+  mapStateToProps,
+  {
+    calculateTotal,
+    checkCartCount,
+    orderFoodItems,
+  },
+)(Checkout);

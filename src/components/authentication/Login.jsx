@@ -118,8 +118,8 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  responseMessage: state.login ? state.login.message : null,
-  isSuccessful: state.login ? state.login.success : null,
+  responseMessage: state.auth && state.auth.response ? state.auth.response.message : null,
+  isSuccessful: state.auth && state.auth.response ? state.auth.response.success : null,
 });
 
 export default connect(mapStateToProps, { login })(Login);

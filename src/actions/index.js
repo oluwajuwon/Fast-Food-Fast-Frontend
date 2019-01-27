@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import axiosInstance from '../api/axiosInstance';
 import authUtils from '../utils/authUtils';
 import cartUtils from '../utils/cartUtils';
@@ -70,5 +72,16 @@ export const calculateTotal = () => (dispatch) => {
       totalAmount += food.price * food.quantity;
     });
     dispatch({ type: 'TOTAL_CALCULATE', payload: totalAmount });
+  }
+};
+
+export const orderFoodItems = foodItems => async (dispatch) => {
+  try {
+    const userToken = authUtils.getUserToken();
+    console.log(userToken, foodItems, 'the stuff');
+    const response = await axiosInstance.post('/orders', foodItems, { headers: { 'x-access-token': userToken } });
+    dispatch({ type: 'ORDER_FOOD', payload: response.data });
+  } catch (error) {
+    dispatch({ type: 'ORDER_FOOD_FAIL', payload: error });
   }
 };
