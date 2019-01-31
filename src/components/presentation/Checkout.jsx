@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import NavBarUSer from './NavBarUser';
 import { calculateTotal, checkCartCount, orderFoodItems } from '../../actions/index';
 import cartUtils from '../../utils/cartUtils';
@@ -17,8 +18,8 @@ class Checkout extends React.Component {
 
   componentDidMount = async () => {
     this.setState({ loading: '' });
-    const { calculateTotal } = this.props;
-    calculateTotal();
+    const { calculateTotal: sumTotal } = this.props;
+    sumTotal();
   }
 
   removeItem = (food) => {
@@ -30,11 +31,14 @@ class Checkout extends React.Component {
         itemIndex = index;
       }
     });
+
     cart.splice(itemIndex, 1);
     cartUtils.addItemToCart(JSON.stringify(cart));
+
     this.setState({ foodItems: JSON.parse(cartUtils.getCartItems()) });
-    const { calculateTotal, checkCartCount: checkCount } = this.props;
-    calculateTotal();
+    const { calculateTotal: sumTotal, checkCartCount: checkCount } = this.props;
+
+    sumTotal();
     checkCount();
   }
 
@@ -51,27 +55,28 @@ class Checkout extends React.Component {
         itemIndex = index;
       }
     });
+
     const updatedFooditem = {
       food_id: foodFound.food_id,
-      name: foodFound.food_name,
+      food_name: foodFound.food_name,
       price: foodFound.price,
       quantity: parseInt(value, 10) || foodFound.quantity,
       image: foodFound.image,
       description: foodFound.description,
       category: foodFound.category_name,
     };
+
     cart.splice(itemIndex, 1, updatedFooditem);
+
     cartUtils.addItemToCart(JSON.stringify(cart));
     this.setState({ foodItems: JSON.parse(cartUtils.getCartItems()) });
-    const { calculateTotal } = this.props;
-    calculateTotal();
+    const { calculateTotal: sumTotal } = this.props;
+    sumTotal();
   }
 
   placeOrder() {
-    const { orderFoodItems: placeNewOrder} = this.props;
+    const { orderFoodItems: placeNewOrder } = this.props;
     const { foodItems } = this.state;
-    // const foodItems = { cartItems };
-    console.log(foodItems);
     placeNewOrder({ foodItems });
   }
 
@@ -84,7 +89,7 @@ class Checkout extends React.Component {
             <img className="img-fluid" src={food.image} alt="food-item" />
           </div>
           <div className="item-details">
-            <h3>{food.name}</h3>
+            <h3>{food.food_name}</h3>
             <p>
               Price:
               <span className="price-figure">
@@ -154,8 +159,22 @@ class Checkout extends React.Component {
   }
 }
 
+Checkout.defaultProps = {
+  checkCartCount: null,
+  calculateTotal: null,
+  orderFoodItems: null,
+  totalAmount: 0,
+};
+
+Checkout.propTypes = {
+  checkCartCount: PropTypes.func,
+  calculateTotal: PropTypes.func,
+  orderFoodItems: PropTypes.func,
+  totalAmount: PropTypes.number,
+};
+
 const mapStateToProps = state => ({
-  totalAmount: state.food ? state.food.totalAmount : [],
+  totalAmount: state.food ? state.food.totalAmount : 0,
 });
 
 export default connect(

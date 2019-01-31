@@ -49,10 +49,14 @@ class UserNavBar extends React.Component {
           </button>
           <div className="dropdown-content">
             <div className="cart-body">
-              <span id="cart-text">Your cart is empty</span>
+              <span id="cart-text">
+              Your cart has
+                {` ${cartCount} `}
+              items
+              </span>
               <br />
               <button type="button" className="blue-bg-colour white-text cart-btn">
-                <Link to="/checkout">Procedd to checkout</Link>
+                <Link to="/checkout" className="white-text">Proceed to checkout</Link>
               </button>
             </div>
           </div>

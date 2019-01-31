@@ -24,9 +24,6 @@ exports[`Test for login component Should contain 1`] = `
           >
             <div>
               <p
-                className="red-text text-center"
-              />
-              <p
                 className=""
               >
                 Email
