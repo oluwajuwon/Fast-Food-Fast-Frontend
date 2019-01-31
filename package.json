@@ -4,7 +4,7 @@
   "description": "A food delivery service application for a restaurant, to enable a restaurant manage customer orders better and deliver fast food items to customers in a 'Split Second",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.prod.js --mode production",
+    "build": "webpack --config ./webpack.config.prod.js --mode production && npm run build:server ",
     "build:server": "babel server.js -d dist",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "heroku-postbuild": "npm run build",
@@ -92,7 +92,9 @@
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
+    "react-toastify": "^4.5.2",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "toastr": "^2.1.4"
   }
 }

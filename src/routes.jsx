@@ -8,6 +8,7 @@ import signup from './components/authentication/Signup';
 import Menu from './components/Menu';
 import Checkout from './components/presentation/Checkout';
 import NotFound from './components/NotFound';
+import OrderHistory from './components/OrderHistory';
 
 export default (
   <BrowserRouter>
@@ -17,6 +18,7 @@ export default (
       <Route path="/signup" component={signup} />
       <Route path="/menu" component={Menu} />
       <Route path="/checkout" component={Checkout} />
+      <Route path="/my-orders" component={OrderHistory} />
       <Route component={NotFound} />
     </Switch>
   </BrowserRouter>

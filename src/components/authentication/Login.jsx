@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { login } from '../../actions/index';
 import NavBar from '../NavBar';
 import Footer from '../presentation/Footer';
@@ -11,7 +12,6 @@ export class Login extends React.Component {
   state={
     email: '',
     password: '',
-    message: '',
     loading: 'Login',
   };
 
@@ -26,10 +26,8 @@ export class Login extends React.Component {
     this.setState({ loading: 'Login' });
 
     if (isSuccessful === 'true') {
-      this.setState({ message: responseMessage });
-      setTimeout(() => {
-        history.push('/menu');
-      }, 900);
+      toast.success(responseMessage);
+      history.push('/menu');
     }
   }
 
@@ -38,9 +36,7 @@ export class Login extends React.Component {
       email,
       password,
       loading,
-      message,
     } = this.state;
-    const { isSuccessful } = this.props;
     return (
       <div className="box-section">
         <NavBar />
@@ -51,9 +47,6 @@ export class Login extends React.Component {
                 <h2>Login to your account</h2>
                 <form id="user-login" onSubmit={this.onFormSubmit}>
                   <div>
-                    <p className={isSuccessful === 'true' ? 'green-text text-center' : 'red-text text-center'}>
-                      {message}
-                    </p>
                     <p className="">Email</p>
                     <input
                       type="email"

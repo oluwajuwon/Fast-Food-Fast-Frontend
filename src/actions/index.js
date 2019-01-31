@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import axiosInstance from '../api/axiosInstance';
 import authUtils from '../utils/authUtils';
 import cartUtils from '../utils/cartUtils';
@@ -78,10 +76,19 @@ export const calculateTotal = () => (dispatch) => {
 export const orderFoodItems = foodItems => async (dispatch) => {
   try {
     const userToken = authUtils.getUserToken();
-    console.log(userToken, foodItems, 'the stuff');
     const response = await axiosInstance.post('/orders', foodItems, { headers: { 'x-access-token': userToken } });
     dispatch({ type: 'ORDER_FOOD', payload: response.data });
   } catch (error) {
     dispatch({ type: 'ORDER_FOOD_FAIL', payload: error });
+  }
+};
+
+export const getOrderHistory = userId => async (dispatch) => {
+  try {
+    const userToken = authUtils.getUserToken();
+    const response = await axiosInstance.get(`/users/${userId}/orders`, { headers: { 'x-access-token': userToken } });
+    dispatch({ type: 'ORDER_HISTORY', payload: response.data });
+  } catch (error) {
+    dispatch({ type: 'ORDER_HISTORY_FAIL', payload: error.response.data });
   }
 };

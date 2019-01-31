@@ -9,14 +9,38 @@
   }
   
   .modal-content{
-    margin: 2% auto;
-    width: 50%;
     background-color: #fefefe;
+    border-radius: 10px;
+    margin: 2% auto;
     overflow: hidden;
+    width: 50%;
   }
 
-  .modal img{
-      width: inherit
+  .btn-div {
+    padding-bottom: 15px;
+    text-align: center;
+  }
+
+  .modal-btn {
+      border: 1px solid #333;
+      border-radius: 5px;
+  }
+
+  .modal-btn:hover {
+    background-color: #483fc4;
+    color: #fff;
+}
+
+  .food-item {
+    border-bottom: 1px solid #333;
+    width: 100%;
+  }
+  .display-block {
+    display: block;
+  }
+  
+  .display-none {
+    display: none;
   }
   
   /* Media queries to target for smaller screen Starts */
