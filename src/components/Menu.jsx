@@ -20,10 +20,14 @@ class Menu extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.setState({ loading: ' Loading...' });
-    const { getMenu: getMenuItems } = this.props;
+    const {
+      isLoggedIn, history, getMenu: getMenuItems,
+    } = this.props;
+    if (isLoggedIn === false) {
+      return history.push('/login');
+    }
     await getMenuItems();
-    this.setState({ loading: '' });
+    return this.setState({ loading: '' });
   }
 
   addFoodToCart = (newfood) => {
@@ -65,7 +69,7 @@ class Menu extends React.Component {
               {food.category_name}
             </p>
           </div>
-          <button type="button" onClick={() => this.addFoodToCart(food)} className="blue-bg-colour white-text">
+          <button type="button" id="addtocart" onClick={() => this.addFoodToCart(food)} className="blue-bg-colour white-text">
             Add to cart
           </button>
         </div>
@@ -86,7 +90,7 @@ class Menu extends React.Component {
               <div className={loading === '' ? 'text-center display-none' : 'text-center display-block'}>
                 <img alt="loading" src={loading} className="center" />
               </div>
-              <div className="flex-container" id="menu-output">
+              <div className="flex-container">
                 {this.renderList()}
               </div>
 
@@ -108,15 +112,20 @@ Menu.defaultProps = {
   menu: [],
   selectFood: null,
   getMenu: null,
+  isLoggedIn: false,
+  history: null,
 };
 
 Menu.propTypes = {
   menu: PropTypes.arrayOf(PropTypes.object),
   selectFood: PropTypes.func,
   getMenu: PropTypes.func,
+  isLoggedIn: PropTypes.bool,
+  history: PropTypes.oneOfType([PropTypes.object]),
 };
 
 const mapStateToProps = state => ({
+  isLoggedIn: state.auth ? state.auth.isLoggedin : null,
   responseMessage: state.food ? state.food.message : null,
   menu: state.food && state.food.menu ? state.food.menu : [],
   cartItems: state.selectedFood ? state.selectedFood.items : [],

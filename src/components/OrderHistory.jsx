@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getOrderHistory } from '../actions/index';
+import { toast } from 'react-toastify';
+import { getOrderHistory, deleteOrder } from '../actions/index';
 import Modal from './presentation/Modal';
 import NavBarUser from './presentation/NavBarUser';
 import Footer from './presentation/Footer';
@@ -10,17 +11,37 @@ class OrderHistory extends React.Component {
   state = {
     orderItems: [],
     showModal: false,
+    showConfirmModal: false,
+    orderID: null,
+    loading: 'https://i.imgur.com/ungt2Pg.gif',
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
-      isLoggedin, history, userId, getOrderHistory: getHistory,
+      isLoggedIn, history, userId, getOrderHistory: getHistory,
     } = this.props;
-    if (isLoggedin === false) {
+    if (isLoggedIn === false) {
       return history.push('/login');
     }
-    return getHistory(userId);
+    await getHistory(userId);
+    return this.setState({ loading: '' });
   }
+
+  confirmDelete = async (order) => {
+    await this.setState({ showConfirmModal: true, orderID: order.order_id });
+  }
+
+  orderDelete = async () => {
+    const { orderID } = this.state;
+    const { deleteOrder: deleteAnOrder } = this.props;
+    await deleteAnOrder(orderID);
+    toast.success('Order deleted');
+    this.setState({ showConfirmModal: false });
+  }
+
+  hideConfirmModal = () => {
+    this.setState({ showConfirmModal: false });
+  };
 
   showItems = async (foodItems) => {
     await this.setState({ orderItems: JSON.parse(foodItems) });
@@ -49,8 +70,9 @@ class OrderHistory extends React.Component {
                 &nbsp;
               <button
                 type="button"
+                id="showitemsBtn"
                 className="blue-bg-colour white-text"
-                onClick={e => this.showItems(order.food_items, e)}
+                onClick={() => this.showItems(order.food_items)}
               >
                   View Items
               </button>
@@ -68,6 +90,15 @@ class OrderHistory extends React.Component {
             </p>
 
             <p>{order.decline_reason}</p>
+            <button
+              type="button"
+              id="deletebtn"
+              className="red-bg-colour white-text"
+              onClick={() => this.confirmDelete(order)}
+            >
+              Delete order
+            </button>
+
           </div>
         </div>
       </div>
@@ -75,12 +106,22 @@ class OrderHistory extends React.Component {
   }
 
   render() {
-    const { showModal, orderItems } = this.state;
+    const { showModal, orderItems, showConfirmModal, loading } = this.state;
     const { orders } = this.props;
     return (
       <div>
         <NavBarUser />
         <main>
+          <Modal show={showConfirmModal} handleClose={this.hideConfirmModal}>
+            <div className="delete-order">
+              <h1>Are you sure?</h1>
+              <div>
+                <button type="button" className="btn green-bg white-text" onClick={() => this.hideConfirmModal()}>No</button>
+                <button type="button" id="confirm-delete" className="btn red-bg-colour white-text" onClick={() => this.orderDelete()}>Yes</button>
+              </div>
+            </div>
+          </Modal>
+
           <Modal show={showModal} handleClose={this.hideModal}>
             <div className="container">
               <h2>Ordered Food Items</h2>
@@ -110,7 +151,9 @@ class OrderHistory extends React.Component {
           <div className="container">
             <h2 className="text-center">My Order History</h2>
             <hr />
-
+            <div className={loading === '' ? 'text-center display-none' : 'text-center display-block'}>
+              <img alt="loading" src={loading} className="center" />
+            </div>
             <div className="meals">
               <div className="flex-container" id="order-history-output">
                 {this.renderList()}
@@ -126,28 +169,30 @@ class OrderHistory extends React.Component {
 
 OrderHistory.defaultProps = {
   orders: [],
-  isLoggedin: false,
+  isLoggedIn: false,
   history: null,
   getOrderHistory: null,
   userId: null,
+  deleteOrder: null,
 };
 
 OrderHistory.propTypes = {
   orders: PropTypes.arrayOf(PropTypes.object),
-  isLoggedin: PropTypes.bool,
+  isLoggedIn: PropTypes.bool,
   history: PropTypes.oneOfType([PropTypes.object]),
   userId: PropTypes.number,
   getOrderHistory: PropTypes.func,
+  deleteOrder: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  isLoggedin: state.auth ? state.auth.isLoggedin : null,
-  userId: state.auth && state.auth.response ? state.auth.response.userId : null,
+const mapStateToProps = ({ auth,order }) => ({
+  isLoggedIn: auth ? auth.isLoggedin : null,
+  userId: auth && auth.user ? auth.user.userId || auth.user.newUser.user_id : null,
   orders:
-    state.order.response && state.order.response.myOrders ? state.order.response.myOrders : [],
+    order.response && order.response.myOrders ? order.response.myOrders : [],
 });
 
 export default connect(
   mapStateToProps,
-  { getOrderHistory },
+  { getOrderHistory, deleteOrder },
 )(OrderHistory);

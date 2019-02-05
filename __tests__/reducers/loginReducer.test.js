@@ -11,10 +11,10 @@ describe('login reducer', () => {
 
   it('returns the correct state', async () => {
     const axiosMock = new MockAdapter(axiosInstance, { delayResponse: 500 });
-    const payload = { success: 'true', message: 'login successful' };
+    const payload = { success: 'true', message: 'login successful', username: 'jayboy' };
     await axiosMock.onPost().reply(200, payload);
     const action = { type: 'LOG_IN', payload };
-    const expectedState = { isLoggedin: true, response: { success: 'true', message: 'login successful' } };
+    const expectedState = { isLoggedin: true, user: { success: 'true', message: 'login successful', username: 'jayboy' } };
 
     expect(login(null, action)).toEqual(expectedState);
   });

@@ -1,10 +1,9 @@
 import express from 'express';
-import path from 'path';
 
 const app = express();
-const { PORT = 8080 } = process.env;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.static(__dirname));
-app.all('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.all('*', (req, res) => res.sendFile(`${__dirname}/index.html`));
 
 app.listen(PORT);

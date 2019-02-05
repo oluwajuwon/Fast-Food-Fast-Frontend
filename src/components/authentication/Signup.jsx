@@ -2,13 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { signup } from '../../actions/index';
 import NavBar from '../NavBar';
 import Footer from '../presentation/Footer';
 import '../../styles/box.css';
 
-export class Signup extends React.Component {
-  state={
+class Signup extends React.Component {
+  state = {
     fullName: '',
     username: '',
     email: '',
@@ -16,6 +17,14 @@ export class Signup extends React.Component {
     confirmPassword: '',
     message: '',
     loading: 'Sign up',
+  }
+
+  componentDidMount() {
+    const { isLoggedin, history } = this.props;
+    if (isLoggedin === true) {
+      return history.push('/menu');
+    }
+    return null;
   }
 
   onFormSubmit = async (event) => {
@@ -38,14 +47,13 @@ export class Signup extends React.Component {
       password,
     };
     await signupUser(userData);
-    const { message, isSuccessful } = this.props;
-    await this.setState({ message, loading: 'Sign up' });
-    setTimeout(() => {
-      if (isSuccessful === true) {
-        history.push('/menu');
-      }
-      this.setState({ message });
-    }, 1000);
+    const { message, isSuccessful, errorMessage } = this.props;
+    await this.setState({ loading: 'Sign up' });
+    if (isSuccessful === 'true') {
+      toast.success(message);
+      return history.push('/menu');
+    }
+    return this.setState({ message: errorMessage });
   }
 
   comparePassword = () => {
@@ -150,21 +158,27 @@ export class Signup extends React.Component {
 
 Signup.defaultProps = {
   message: '',
+  errorMessage: '',
   signup: () => {},
   isSuccessful: '',
   history: null,
+  isLoggedin: false,
 };
 
 Signup.propTypes = {
   signup: PropTypes.func,
+  isLoggedin: PropTypes.bool,
   message: PropTypes.string,
+  errorMessage: PropTypes.string,
   isSuccessful: PropTypes.string,
   history: PropTypes.oneOfType([PropTypes.object]),
 };
 
 const mapStateToProps = state => ({
-  message: state.auth && state.auth.response ? state.auth.response.message : null,
-  isSuccessful: state.auth && state.auth.response ? state.auth.response.success : null,
+  isLoggedin: state.auth ? state.auth.isLoggedin : null,
+  message: state.auth && state.auth.user ? state.auth.user.message : null,
+  errorMessage: state.auth && state.auth.response ? state.auth.response.message : null,
+  isSuccessful: state.auth && state.auth.user ? state.auth.user.success : null,
 });
 
 export default connect(mapStateToProps, { signup })(Signup);

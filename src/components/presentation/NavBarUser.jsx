@@ -1,23 +1,40 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { checkCartCount } from '../../actions/index';
+import { checkCartCount, logoutUser } from '../../actions/index';
+import '../../styles/style.css';
 
 class UserNavBar extends React.Component {
   state = {
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { checkCartCount: checkCount } = this.props;
+    await checkCount();
+  }
+
+  showNav = () => {
+    const nav = document.getElementById('myNav');
+    if (nav.className === 'navbar') {
+      nav.className += ' responsive';
+    } else {
+      nav.className = 'navbar';
+    }
+  }
+
+  async logout() {
+    const { logoutUser: logUserout, history, checkCartCount: checkCount } = this.props;
+    await logUserout();
     checkCount();
+    history.push('/');
   }
 
   render() {
     const { cartCount, username } = this.props;
     return (
       <nav className="navbar" id="myNav">
-        <Link to="#home" className="nav-brand">Fast-Food-Fast</Link>
+        <Link to="/" className="nav-brand">Fast-Food-Fast</Link>
         <Link to="/menu">View Menu</Link>
         <div className="dropdown">
           <button type="button" className="dropbtn">
@@ -36,7 +53,7 @@ class UserNavBar extends React.Component {
           </button>
           <div className="dropdown-content">
             <Link to="my-account">My Account</Link>
-            <Link to="/logout">Logout</Link>
+            <button type="button" onClick={() => this.logout()} className="logout-btn">Logout</button>
           </div>
         </div>
         <div className="dropdown profile">
@@ -61,7 +78,7 @@ class UserNavBar extends React.Component {
             </div>
           </div>
         </div>
-        <button type="button" id="nav-icon" className="icon">&#9776;</button>
+        <button type="button" id="nav-icon" className="icon" onClick={() => this.showNav()}>&#9776;</button>
       </nav>
     );
   }
@@ -71,17 +88,21 @@ UserNavBar.defaultProps = {
   checkCartCount: null,
   username: '',
   cartCount: null,
+  logoutUser: null,
+  history: null,
 };
 
 UserNavBar.propTypes = {
   checkCartCount: PropTypes.func,
   username: PropTypes.string,
   cartCount: PropTypes.number,
+  logoutUser: PropTypes.func,
+  history: PropTypes.oneOfType([PropTypes.object]),
 };
 
-const mapStateToProps = state => ({
-  cartCount: state.cart.cartCount,
-  username: state.login && state.login.username ? state.login.username : '',
+const mapStateToProps = ({ auth, cart }) => ({
+  cartCount: cart.cartCount,
+  username: auth && auth.user ? auth.user.username || auth.user.newUser.username : '',
 });
 
-export default connect(mapStateToProps, { checkCartCount })(UserNavBar);
+export default connect(mapStateToProps, { checkCartCount, logoutUser })(withRouter(UserNavBar));

@@ -1,7 +1,8 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'production',
-  entry: './client/src/index.jsx',
+  entry: './src/index.jsx',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
@@ -31,12 +32,17 @@ module.exports = {
   },
   target: 'web',
   output: {
-    path: `${__dirname}/client/dist`,
+    path: `${__dirname}/dist`,
     publicPath: '/',
     filename: 'bundle.js',
   },
+  plugins: [new HtmlWebpackPlugin(
+    {
+      template: './public/index.html',
+    },
+  )],
   devServer: {
-    contentBase: `${__dirname}/client/public`,
+    contentBase: `${__dirname}/public`,
     port: 5000,
     historyApiFallback: true,
   },
