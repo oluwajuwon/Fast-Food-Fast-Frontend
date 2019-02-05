@@ -1,14 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test for footer component Should contain a particular div block 1`] = `
-<footer>
-  <div
-    className="text-center white-text"
-  >
-    Fast-Food-Fast © 2018   Developed by  
-    <b>
-      Juwon.
-    </b>
-  </div>
-</footer>
+<div>
+  <footer>
+    <div
+      class="text-center white-text"
+    >
+      Fast-Food-Fast © 2018   Developed by  
+      <b>
+        Juwon.
+      </b>
+    </div>
+  </footer>
+</div>
 `;

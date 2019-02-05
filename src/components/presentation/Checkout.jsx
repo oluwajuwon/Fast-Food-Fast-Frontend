@@ -2,8 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import NavBarUSer from './NavBarUser';
-import { calculateTotal, checkCartCount, orderFoodItems } from '../../actions/index';
+import {
+  calculateTotal, checkCartCount, orderFoodItems,
+} from '../../actions/index';
 import cartUtils from '../../utils/cartUtils';
 import '../../styles/style.css';
 
@@ -18,8 +21,11 @@ class Checkout extends React.Component {
 
   componentDidMount = async () => {
     this.setState({ loading: '' });
-    const { calculateTotal: sumTotal } = this.props;
-    sumTotal();
+    const { calculateTotal: sumTotal, isLoggedIn, history } = this.props;
+    if (isLoggedIn === false) {
+      return history.push('/login');
+    }
+    return sumTotal();
   }
 
   removeItem = (food) => {
@@ -74,10 +80,20 @@ class Checkout extends React.Component {
     sumTotal();
   }
 
-  placeOrder() {
+  placeOrder = async () => {
     const { orderFoodItems: placeNewOrder } = this.props;
     const { foodItems } = this.state;
-    placeNewOrder({ foodItems });
+    await placeNewOrder({ foodItems });
+    const {
+      orderMessage, isSuccessful, history, checkCartCount: checkCount,
+    } = this.props;
+    if (isSuccessful === 'true') {
+      toast.success(orderMessage);
+      cartUtils.removeCartItems();
+      checkCount();
+      return history.push('/menu');
+    }
+    return toast.error('Could not place order');
   }
 
   renderList() {
@@ -110,7 +126,15 @@ class Checkout extends React.Component {
           </div>
           <h3>
             Quantity:
-            <input type="number" className="txt-quantity" key={food.food_id} onChange={event => this.updateQuantity(food, event)} min="0" id="quantity" defaultValue={food.quantity} />
+            <input
+              type="number"
+              className="txt-quantity"
+              key={food.food_id}
+              onChange={event => this.updateQuantity(food, event)}
+              min="0"
+              id="quantity"
+              defaultValue={food.quantity}
+            />
           </h3>
           <button className="red-bg-colour white-text" type="button" onClick={e => this.removeItem(food, e)}>
             Remove
@@ -128,11 +152,11 @@ class Checkout extends React.Component {
         <NavBarUSer />
         <div className="container">
           <div className={loading === '' ? 'text-center display-none' : 'text-center display-block'}>
-            <img alt="loading" src={loading} className="center" />
+            <img alt="loading" src={loading} className="text-center" />
           </div>
           <h2 className="text-center">Checkout</h2>
           <hr />
-          <div className={foodItems && foodItems.length < 1 ? 'text-center display-block' : 'text-center display-none'}>
+          <div className={!foodItems || foodItems.length < 1 ? 'text-center display-block' : 'text-center display-none'}>
             <h1>Your cart is empty</h1>
           </div>
           <div className="meals">
@@ -141,12 +165,12 @@ class Checkout extends React.Component {
             </div>
           </div>
 
-          <div className={foodItems && foodItems.length < 1 ? 'text-center display-none' : 'text-center display-block'}>
+          <div className={!foodItems || foodItems.length < 1 ? 'text-center display-none' : 'text-center display-block'}>
             <h3>
               Total: &#8358;
               {totalAmount}
             </h3>
-            <button type="button" onClick={event => this.placeOrder(event)} className="blue-bg-colour white-text">
+            <button type="button" onClick={() => this.placeOrder()} id="orderfood" className="blue-bg-colour white-text">
               Place Order
             </button>
             <div>
@@ -164,6 +188,10 @@ Checkout.defaultProps = {
   calculateTotal: null,
   orderFoodItems: null,
   totalAmount: 0,
+  orderMessage: '',
+  isSuccessful: '',
+  history: null,
+  isLoggedIn: false,
 };
 
 Checkout.propTypes = {
@@ -171,10 +199,17 @@ Checkout.propTypes = {
   calculateTotal: PropTypes.func,
   orderFoodItems: PropTypes.func,
   totalAmount: PropTypes.number,
+  orderMessage: PropTypes.string,
+  isSuccessful: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  history: PropTypes.oneOfType([PropTypes.object]),
 };
 
 const mapStateToProps = state => ({
+  isLoggedIn: state.auth ? state.auth.isLoggedin : null,
   totalAmount: state.food ? state.food.totalAmount : 0,
+  orderMessage: state.cart.newOrder ? state.cart.newOrder.message : '',
+  isSuccessful: state.cart.newOrder ? state.cart.newOrder.success : '',
 });
 
 export default connect(

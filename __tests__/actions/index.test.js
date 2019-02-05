@@ -6,6 +6,7 @@ import {
   selectFood,
   checkCartCount,
   calculateTotal,
+  getLoggedinUser,
 } from '../../src/actions';
 import axios from '../../src/api/axiosInstance';
 
@@ -37,6 +38,24 @@ describe('Redux actions', () => {
       await login()(dispatch);
       expect(dispatch).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledWith({ type: 'LOG_IN_FAIL', payload });
+    });
+  });
+
+  describe('authenticate user', () => {
+    test('call dispatch with correct type', async () => {
+      const payload = { currentUser: { user: { username: 'juwonzy' } } };
+      await axiosMock.onGet().replyOnce(200, payload);
+      await getLoggedinUser()(dispatch);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledWith({ type: 'AUTHENTICATE_USER', payload: payload.currentUser });
+    });
+
+    test('call dispatch with correct type', async () => {
+      const payload = { success: 'fail', message: 'can not validate user' };
+      await axiosMock.onGet().replyOnce(500, payload);
+      await getLoggedinUser()(dispatch);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledWith({ type: 'AUTHENTICATE_USER_FAIL', payload });
     });
   });
 

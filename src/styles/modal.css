@@ -1,54 +1,58 @@
 .modal {
-    position: fixed;
-    display: none;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-  
-  .modal-content{
-    background-color: #fefefe;
-    border-radius: 10px;
-    margin: 2% auto;
-    overflow: hidden;
-    width: 50%;
-  }
-
-  .btn-div {
-    padding-bottom: 15px;
-    text-align: center;
-  }
-
-  .modal-btn {
-      border: 1px solid #333;
-      border-radius: 5px;
-  }
-
-  .modal-btn:hover {
-    background-color: #483fc4;
-    color: #fff;
+  position: fixed;
+  display: none;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-  .food-item {
-    border-bottom: 1px solid #333;
-    width: 100%;
+.modal-content {
+  background-color: #fefefe;
+  border-radius: 10px;
+  margin: 2% auto;
+  overflow: hidden;
+  width: 50%;
+}
+
+.btn-div {
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.modal-btn {
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.modal-btn:hover {
+  background-color: #483fc4;
+  color: #fff;
+}
+
+.delete-order {
+  text-align: center;
+}
+
+.food-item {
+  border-bottom: 1px solid #333;
+  width: 100%;
+}
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+/* Media queries to target for smaller screen Starts */
+@media (min-width: 320px) and (max-width: 720px) {
+  .modal-content {
+    width: 90%;
   }
-  .display-block {
-    display: block;
-  }
-  
-  .display-none {
-    display: none;
-  }
-  
-  /* Media queries to target for smaller screen Starts */
-  @media (min-width:320px) and (max-width:720px) {
-    .modal-content {
-      width: 90%;
-    }
-  }
-  
-  /* Media queries to target smaller screens Ends */
-  
+}
+
+/* Media queries to target smaller screens Ends */
