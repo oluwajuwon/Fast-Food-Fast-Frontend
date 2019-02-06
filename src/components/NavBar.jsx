@@ -10,9 +10,6 @@ const NavBar = () => (
       <Link to="/login" className="profile">
           Login
       </Link>
-      <i id="nav-icon" className="icon">
-          &#9776;
-      </i>
     </nav>
   </div>
 );

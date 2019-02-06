@@ -5,7 +5,7 @@ import { fireEvent, waitForDomChange } from 'react-testing-library';
 import MockAdapter from 'axios-mock-adapter';
 import OrderHistory from '../../src/components/OrderHistory';
 import { deleteOrder } from '../../src/actions';
-import { renderWithRedux } from '../../__mocks__/helpers';
+import renderWithRedux from '../../__mocks__/helpers';
 import axios from '../../src/api/axiosInstance';
 
 const axiosMock = new MockAdapter(axios, { delayResponse: 500 });

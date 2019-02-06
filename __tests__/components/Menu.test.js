@@ -5,7 +5,7 @@ import { fireEvent, waitForDomChange } from 'react-testing-library';
 import MockAdapter from 'axios-mock-adapter';
 import Menu from '../../src/components/Menu';
 import { selectFood } from '../../src/actions';
-import { renderWithRedux } from '../../__mocks__/helpers';
+import renderWithRedux from '../../__mocks__/helpers';
 import axios from '../../src/api/axiosInstance';
 
 const axiosMock = new MockAdapter(axios, { delayResponse: 1000 });

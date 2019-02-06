@@ -6,7 +6,7 @@ import { fireEvent, waitForElement } from 'react-testing-library';
 import MockAdapter from 'axios-mock-adapter';
 import Signup from '../../../src/components/authentication/Signup';
 import { signup } from '../../../src/actions';
-import { renderWithRedux } from '../../../__mocks__/helpers';
+import renderWithRedux from '../../../__mocks__/helpers';
 import axios from '../../../src/api/axiosInstance';
 
 
