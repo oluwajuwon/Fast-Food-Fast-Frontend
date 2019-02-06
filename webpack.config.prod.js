@@ -41,9 +41,4 @@ module.exports = {
       template: './public/index.html',
     },
   )],
-  devServer: {
-    contentBase: `${__dirname}/public`,
-    port: 5000,
-    historyApiFallback: true,
-  },
 };

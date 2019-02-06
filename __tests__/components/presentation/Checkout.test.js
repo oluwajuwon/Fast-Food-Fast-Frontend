@@ -6,7 +6,7 @@ import { fireEvent, waitForDomChange } from 'react-testing-library';
 import MockAdapter from 'axios-mock-adapter';
 import Checkout from '../../../src/components/presentation/Checkout';
 import { orderFoodItems } from '../../../src/actions';
-import { renderWithRedux } from '../../../__mocks__/helpers';
+import renderWithRedux from '../../../__mocks__/helpers';
 import axios from '../../../src/api/axiosInstance';
 import cartUtils from '../../../src/utils/cartUtils';
 
@@ -48,7 +48,7 @@ describe('<Checkout />', () => {
 
   let ui = (
     <Router history={history}>
-      <Checkout history={history}/>
+      <Checkout history={history} />
     </Router>
   );
 

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import Index from '../../src/components/Index';
 import reducers from '../../src/reducers';
-import { renderWithRedux } from '../../__mocks__/helpers';
+import renderWithRedux from '../../__mocks__/helpers';
 import axios from '../../src/api/axiosInstance';
 
 const axiosMock = new MockAdapter(axios, { delayResponse: 500 });
@@ -28,7 +28,8 @@ describe('<Index />', () => {
       </Router>
     );
 
-    const connectedIndexComponent = renderWithRedux(ui, { initialState: { auth: { isLoggedIn: false } } });
+    const connectedIndexComponent = renderWithRedux(ui,
+      { initialState: { auth: { isLoggedIn: false } } });
     axiosMock.onGet().replyOnce(200, {
       menu: [
         {
