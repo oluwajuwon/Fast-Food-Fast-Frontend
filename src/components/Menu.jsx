@@ -124,11 +124,11 @@ Menu.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]),
 };
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.auth ? state.auth.isLoggedin : null,
-  responseMessage: state.food ? state.food.message : null,
-  menu: state.food && state.food.menu ? state.food.menu : [],
-  cartItems: state.selectedFood ? state.selectedFood.items : [],
+const mapStateToProps = ({ auth, food, selectedFood }) => ({
+  isLoggedIn: auth ? auth.isLoggedin : null,
+  responseMessage: food ? food.message : null,
+  menu: food && food.menu ? food.menu : [],
+  cartItems: selectedFood ? selectedFood.items : [],
 });
 
 export default connect(mapStateToProps, { getMenu, selectFood })(Menu);

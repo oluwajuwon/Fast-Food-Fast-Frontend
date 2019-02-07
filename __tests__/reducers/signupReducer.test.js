@@ -14,7 +14,7 @@ describe('signup reducer', () => {
     const payload = { success: 'true', message: 'Sign up successful', addedUSer: { username: 'jayboy' } };
     await axiosMock.onPost().reply(200, payload);
     const action = { type: 'SIGN_UP', payload };
-    const expectedState = { isLoggedin: true, user: { success: 'true', message: 'Sign up successful', addedUSer: { username: 'jayboy' } } };
+    const expectedState = { isLoggedin: true, response: '', user: { success: 'true', message: 'Sign up successful', addedUSer: { username: 'jayboy' } } };
 
     expect(signup(null, action)).toEqual(expectedState);
   });

@@ -106,7 +106,9 @@ class OrderHistory extends React.Component {
   }
 
   render() {
-    const { showModal, orderItems, showConfirmModal, loading } = this.state;
+    const {
+      showModal, orderItems, showConfirmModal, loading,
+    } = this.state;
     const { orders } = this.props;
     return (
       <div>
@@ -185,7 +187,7 @@ OrderHistory.propTypes = {
   deleteOrder: PropTypes.func,
 };
 
-const mapStateToProps = ({ auth,order }) => ({
+const mapStateToProps = ({ auth, order }) => ({
   isLoggedIn: auth ? auth.isLoggedin : null,
   userId: auth && auth.user ? auth.user.userId || auth.user.newUser.user_id : null,
   orders:

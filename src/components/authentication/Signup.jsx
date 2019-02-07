@@ -174,11 +174,11 @@ Signup.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]),
 };
 
-const mapStateToProps = state => ({
-  isLoggedin: state.auth ? state.auth.isLoggedin : null,
-  message: state.auth && state.auth.user ? state.auth.user.message : null,
-  errorMessage: state.auth && state.auth.response ? state.auth.response.message : null,
-  isSuccessful: state.auth && state.auth.user ? state.auth.user.success : null,
+const mapStateToProps = ({ auth }) => ({
+  isLoggedin: auth ? auth.isLoggedin : null,
+  message: auth && auth.user ? auth.user.message : null,
+  errorMessage: auth && auth.response ? auth.response.message : null,
+  isSuccessful: auth && auth.user ? auth.user.success : null,
 });
 
 export default connect(mapStateToProps, { signup })(Signup);

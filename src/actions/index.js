@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import axiosInstance from '../api/axiosInstance';
 import authUtils from '../utils/authUtils';
 import cartUtils from '../utils/cartUtils';
@@ -6,6 +7,7 @@ export const login = userdata => async (dispatch) => {
   try {
     const response = await axiosInstance.post('/auth/login', userdata);
     authUtils.saveUserToken(response.data.userToken);
+    authUtils.saveUserData(response.data);
     dispatch({
       type: 'LOG_IN',
       payload: response.data,
@@ -18,19 +20,20 @@ export const login = userdata => async (dispatch) => {
   }
 };
 
-export const getLoggedinUser = () => async (dispatch) => {
-  try {
-    const userToken = authUtils.getUserToken();
-    const { data: { currentUser: user } } = await axiosInstance.get('/user', { headers: { 'x-access-token': userToken } });
-    dispatch({ type: 'AUTHENTICATE_USER', payload: user });
-  } catch ({ response }) {
-    dispatch({ type: 'AUTHENTICATE_USER_FAIL', payload: response.data });
+export const getLoggedinUser = () => {
+  const userToken = authUtils.getUserToken();
+  const decodedToken = jwt.decode(userToken, { complete: true });
+  const dateNow = new Date();
+  if (decodedToken.payload.exp < dateNow.getTime() / 1000) {
+    return ({ type: 'AUTHENTICATE_USER_FAIL', payload: 'please log in' });
   }
+  const user = JSON.parse(authUtils.getUserData());
+  return ({ type: 'AUTHENTICATE_USER', payload: user });
 };
-
 
 export const logoutUser = () => async (dispatch) => {
   authUtils.removeUserToken();
+  authUtils.removeUserData();
   cartUtils.removeCartItems();
   dispatch({ type: 'LOGOUT' });
 };
@@ -39,6 +42,7 @@ export const signup = userdata => async (dispatch) => {
   try {
     const response = await axiosInstance.post('/auth/signup', userdata);
     authUtils.saveUserToken(response.data.userToken);
+    authUtils.saveUserData(response.data);
     dispatch({
       type: 'SIGN_UP',
       payload: response.data,
