@@ -1,6 +1,7 @@
 
 const initialState = {
   cartCount: 0,
+  newOrder: {},
 };
 export default (state = initialState, action) => {
   switch (action.type) {

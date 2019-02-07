@@ -9,13 +9,15 @@ import '../styles/style.css';
 
 class Index extends React.Component {
   async componentDidMount() {
-    const { isLoggedin, history } = this.props;
-    if (isLoggedin === true) {
-      return history.push('/menu');
-    }
-    const { getMenu: getMenuItems } = this.props;
-    await getMenuItems();
-    return null;
+    setTimeout(async () => {
+      const { isLoggedin, history } = this.props;
+      if (isLoggedin === true) {
+        return history.push('/menu');
+      }
+      const { getMenu: getMenuItems } = this.props;
+      await getMenuItems();
+      return null;
+    }, 200);
   }
 
   recentMenuList() {
@@ -102,9 +104,9 @@ Index.propTypes = {
   menu: PropTypes.arrayOf(PropTypes.object),
 };
 
-const mapStateToProps = state => ({
-  isLoggedin: state.auth ? state.auth.isLoggedin : null,
-  menu: state.food && state.food.menu ? state.food.menu : [],
+const mapStateToProps = ({ auth, food }) => ({
+  isLoggedin: auth ? auth.isLoggedin : null,
+  menu: food && food.menu ? food.menu : [],
 });
 
 export default connect(mapStateToProps, { getMenu })(Index);

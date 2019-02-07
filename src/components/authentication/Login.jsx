@@ -16,11 +16,13 @@ class Login extends React.Component {
   };
 
   componentDidMount() {
-    const { isLoggedin, history } = this.props;
-    if (isLoggedin === true) {
+    setTimeout(async () => {
+      const { isLoggedin, history } = this.props;
+      if (isLoggedin === false) {
+        return null;
+      }
       return history.push('/menu');
-    }
-    return null;
+    }, 200);
   }
 
   onFormSubmit = async (event) => {
@@ -30,14 +32,16 @@ class Login extends React.Component {
     const { email, password } = this.state;
     const userData = { email, password };
     await loginUser(userData);
-    const { responseMessage, isSuccessful, history } = this.props;
+    const {
+      responseMessage, isSuccessful, history, errorMessage,
+    } = this.props;
     this.setState({ loading: 'Login' });
 
     if (isSuccessful === 'true') {
       toast.success(responseMessage);
       return history.push('/menu');
     }
-    return toast.error(responseMessage);
+    return toast.error(errorMessage);
   }
 
   render() {
@@ -109,6 +113,7 @@ class Login extends React.Component {
 
 Login.defaultProps = {
   responseMessage: '',
+  errorMessage: '',
   login: () => {},
   isSuccessful: '',
   history: null,
@@ -118,15 +123,17 @@ Login.defaultProps = {
 Login.propTypes = {
   login: PropTypes.func,
   responseMessage: PropTypes.string,
+  errorMessage: PropTypes.string,
   history: PropTypes.oneOfType([PropTypes.object]),
   isSuccessful: PropTypes.string,
   isLoggedin: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-  isLoggedin: state.auth ? state.auth.isLoggedin : null,
-  responseMessage: state.auth && state.auth.user ? state.auth.user.message : null,
-  isSuccessful: state.auth && state.auth.user ? state.auth.user.success : null,
+const mapStateToProps = ({ auth }) => ({
+  isLoggedin: auth ? auth.isLoggedin : null,
+  responseMessage: auth && auth.user ? auth.user.message : null,
+  errorMessage: auth && auth.response ? auth.response.message : null,
+  isSuccessful: auth && auth.user ? auth.user.success : null,
 });
 
 export default connect(mapStateToProps, { login })(Login);

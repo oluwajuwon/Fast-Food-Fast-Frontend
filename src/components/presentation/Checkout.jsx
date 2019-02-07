@@ -205,11 +205,11 @@ Checkout.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]),
 };
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.auth ? state.auth.isLoggedin : null,
-  totalAmount: state.food ? state.food.totalAmount : 0,
-  orderMessage: state.cart.newOrder ? state.cart.newOrder.message : '',
-  isSuccessful: state.cart.newOrder ? state.cart.newOrder.success : '',
+const mapStateToProps = ({ auth, food, cart }) => ({
+  isLoggedIn: auth ? auth.isLoggedin : null,
+  totalAmount: food ? food.totalAmount : 0,
+  orderMessage: cart.newOrder ? cart.newOrder.message : '',
+  isSuccessful: cart.newOrder ? cart.newOrder.success : '',
 });
 
 export default connect(
